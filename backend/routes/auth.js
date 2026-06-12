@@ -36,7 +36,7 @@ router.post("/register", async (req, res) => {
     res.status(201).json({ success:true, token: signToken(user._id), user: user.toSafeJSON() });
   } catch (err) {
     console.error("Register error:", err);
-    res.status(500).json({ success:false, error: "DEBUG: " + err.message });
+    res.status(500).json({ success:false, error:"Registration failed. Please try again." });
   }
 });
 
@@ -58,7 +58,7 @@ router.post("/login", async (req, res) => {
     res.json({ success:true, token: signToken(user._id), user: user.toSafeJSON() });
   } catch (err) {
     console.error("Login error:", err);
-    res.status(500).json({ success:false, error: "DEBUG: " + err.message });
+    res.status(500).json({ success:false, error:"Login failed. Please try again." });
   }
 });
 
@@ -96,4 +96,4 @@ router.put("/password", protect, async (req, res) => {
 });
 
 module.exports = router;
-                                
+    
