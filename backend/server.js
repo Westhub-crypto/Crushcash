@@ -17,7 +17,13 @@ const { initGameSocket } = require("./socket/gameSocket");
 
 const app    = express();
 const server = http.createServer(app);
-app.set('trust proxy', 1);
+
+// ── Trust Render's reverse proxy ─────────────────
+// REQUIRED: without this, express-rate-limit throws on every
+// request because Render sets X-Forwarded-For, causing every
+// route (including /api/auth/login & /register) to 500
+// with a generic error.
+app.set("trust proxy", 1);
 
 // ── Socket.io — same origin now, CORS not even needed but kept safe ──
 const io = new Server(server, {
@@ -115,4 +121,3 @@ process.on("SIGTERM", () => {
 });
 
 module.exports = { app, io };
-  
