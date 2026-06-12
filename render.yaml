@@ -1,0 +1,42 @@
+services:
+  - type: web
+    name: crushcash
+    env: node
+    region: frankfurt
+    plan: free
+    buildCommand: npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: SQUADCO_SECRET_KEY
+        sync: false
+      - key: SQUADCO_PUBLIC_KEY
+        sync: false
+      - key: SQUADCO_BASE_URL
+        value: https://sandbox-api-d.squadco.com
+      - key: SQUADCO_WEBHOOK_SECRET
+        sync: false
+      - key: NIN_VERIFY_API_KEY
+        sync: false
+      - key: NIN_VERIFY_BASE_URL
+        value: https://api.youverify.co/v2
+      - key: SIGNUP_BONUS
+        value: 500
+      - key: REFERRAL_REWARD
+        value: 50
+      - key: GAME_DURATION_SECONDS
+        value: 300
+      - key: COOLDOWN_DURATION_SECONDS
+        value: 300
+      - key: MAX_SCORE_RATE
+        value: 300
+      - key: MAX_FLAGS_BEFORE_BAN
+        value: 3
