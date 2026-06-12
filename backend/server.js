@@ -16,6 +16,7 @@ const referralRoutes = require("./routes/referral");
 const { initGameSocket } = require("./socket/gameSocket");
 
 const app    = express();
+const server = http.createServer(app);
 app.set('trust proxy', 1);
 
 // ── Socket.io — same origin now, CORS not even needed but kept safe ──
