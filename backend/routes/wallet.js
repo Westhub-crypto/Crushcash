@@ -4,6 +4,7 @@ const User        = require("../models/User");
 const Transaction = require("../models/Transaction");
 const { protect } = require("../middleware/auth");
 const squadco     = require("../services/squadco");
+const { NIGERIAN_BANKS } = require("../config/banks");
 
 const router = express.Router();
 
@@ -93,6 +94,7 @@ router.post("/webhook", async (req, res) => {
   }
 });
 
+// ── Withdraw: now requires email + phone verification (NOT NIN) ──
 router.post("/withdraw", protect, async (req, res) => {
   try {
     const amt = Number(req.body.amount);
@@ -100,8 +102,12 @@ router.post("/withdraw", protect, async (req, res) => {
 
     const user = await User.findById(req.user._id);
 
-    if (user.kycStatus !== "verified")
-      return res.status(403).json({ success:false, error:"KYC verification required before withdrawal.", kycRequired:true });
+    if (!user.emailVerified || !user.phoneVerified)
+      return res.status(403).json({
+        success:false,
+        error:"Please verify your email and phone number before withdrawing.",
+        verificationRequired:true,
+      });
 
     if (user.balance < amt) return res.status(400).json({ success:false, error:"Insufficient balance" });
     if (!user.bankAccount?.accountNumber) return res.status(400).json({ success:false, error:"Please add a bank account first" });
@@ -149,9 +155,9 @@ router.get("/transactions", protect, async (req, res) => {
   res.json({ success:true, transactions:txns, total });
 });
 
+// Static Nigerian bank list — no external API needed
 router.get("/banks", protect, async (req, res) => {
-  const banks = await squadco.getSupportedBanks();
-  res.json({ success:true, banks });
+  res.json({ success:true, banks: NIGERIAN_BANKS });
 });
 
 router.post("/verify-account", protect, async (req, res) => {
@@ -165,3 +171,4 @@ router.post("/verify-account", protect, async (req, res) => {
 });
 
 module.exports = router;
+    
