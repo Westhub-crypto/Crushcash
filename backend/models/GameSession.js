@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const playerSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref:"User", required:true },
+  userId: { type: mongoose.Schema.Types.Mixed, required:true }, // ObjectId for humans, string for bots
+  isBot: { type: Boolean, default: false },
   name: String, score: { type:Number, default:0 },
   scoreHistory: [{ score:Number, ts:Date }],
   lastScoreCheck: { type:Number, default:0 },
@@ -29,3 +30,4 @@ const gameSessionSchema = new mongoose.Schema({
 gameSessionSchema.index({ roomId:1, status:1 });
 gameSessionSchema.index({ "players.userId":1 });
 module.exports = mongoose.model("GameSession", gameSessionSchema);
+                                         
