@@ -102,13 +102,6 @@ router.post("/withdraw", protect, async (req, res) => {
 
     const user = await User.findById(req.user._id);
 
-    if (!user.emailVerified || !user.phoneVerified)
-      return res.status(403).json({
-        success:false,
-        error:"Please verify your email and phone number before withdrawing.",
-        verificationRequired:true,
-      });
-
     if (user.balance < amt) return res.status(400).json({ success:false, error:"Insufficient balance" });
     if (!user.bankAccount?.accountNumber) return res.status(400).json({ success:false, error:"Please add a bank account first" });
 
@@ -171,4 +164,4 @@ router.post("/verify-account", protect, async (req, res) => {
 });
 
 module.exports = router;
-    
+                                      
