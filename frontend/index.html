@@ -3,21 +3,43 @@
   <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="description" content="CrushCash — Nigeria's #1 Competitive Candy Gaming Platform. Play candy crush, win real Naira."/>
+    <meta name="description" content="CrushCash — Nigeria's #1 Competitive Candy Gaming Platform"/>
     <meta name="theme-color" content="#07071A"/>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍬</text></svg>"/>
     <title>CrushCash — Crush Candies. Win Real Cash.</title>
     <style>
-      *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-      html,body,#root{height:100%}
-      body{background:#07071A;color:#F1F5F9;font-family:'Segoe UI',system-ui,-apple-system,sans-serif;overflow-x:hidden}
-      ::-webkit-scrollbar{width:6px}
-      ::-webkit-scrollbar-track{background:rgba(255,255,255,0.04)}
-      ::-webkit-scrollbar-thumb{background:rgba(124,58,237,0.5);border-radius:3px}
-      input,button,select,textarea{font-family:inherit}
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      html, body, #root { height: 100%; }
+      body { background: #07071A; color: #F1F5F9; font-family: 'Segoe UI', system-ui, sans-serif; overflow-x: hidden; }
+      input, button, select, textarea { font-family: inherit; }
+      ::-webkit-scrollbar { width: 5px; }
+      ::-webkit-scrollbar-thumb { background: rgba(124,58,237,0.5); border-radius: 3px; }
+
+      /* Initial loading screen shown before React mounts */
+      #app-loader {
+        position: fixed; inset: 0; z-index: 99999;
+        background: #07071A;
+        display: flex; flex-direction: column;
+        align-items: center; justify-content: center; gap: 20px;
+        transition: opacity 0.4s ease;
+      }
+      #app-loader.hide { opacity: 0; pointer-events: none; }
+      .loader-candy { font-size: 64px; animation: loaderSpin 1s linear infinite; }
+      .loader-text { font-size: 22px; font-weight: 900; letter-spacing: -0.5px;
+        background: linear-gradient(130deg, #fff 40%, #EC4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+      .loader-dots { color: rgba(255,255,255,0.4); font-size: 14px; animation: loaderPulse 1.2s ease-in-out infinite; }
+      @keyframes loaderSpin { to { transform: rotate(360deg); } }
+      @keyframes loaderPulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
     </style>
   </head>
   <body>
+    <!-- Shown immediately before React hydrates -->
+    <div id="app-loader">
+      <div class="loader-candy">🍬</div>
+      <div class="loader-text">CrushCash</div>
+      <div class="loader-dots">Loading your arena...</div>
+    </div>
+
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
